@@ -1,5 +1,6 @@
 import React, {createContext, useReducer} from "react";
-import {v4 as genId} from "uuid";
+import {getMockData, getMockIngredients} from "./Mock";
+import {HelperService} from "./HelperService";
 
 export const store = createContext();
 
@@ -10,31 +11,10 @@ const emptyModal = {
     ingredients: [],
 };
 const initialState = {
-    recipes: [
-        {
-            id: genId(),
-            title: "Sword",
-            description: "Grete sword from Iron and wood",
-            ingredients: ["Iron", "Wood"],
-        },
-        {
-            id: genId(),
-            title: "Burning Rose",
-            description: "we just set fire to this flower",
-            ingredients: ["Flowers", "Fire"],
-        },
-    ],
+    recipes: getMockData(),
     modalRecipe: emptyModal,
     isShowModal: false,
-    ingredientsList: [
-        "Iron",
-        "Flowers",
-        "Stone",
-        "Water",
-        "Plastic",
-        "Fire",
-        "Wood",
-    ],
+    ingredientsList: getMockIngredients(),
 };
 
 const reducer = (state, action) => {
@@ -46,7 +26,7 @@ const reducer = (state, action) => {
                 modalRecipe: action.value ? action.value : emptyModal,
             };
         case "copyItem": {
-            const newItem = {...action.value, id: genId()};
+            const newItem = {...action.value, id: HelperService.GenId()};
             return {
                 ...state,
                 recipes: [...state.recipes, newItem],
@@ -62,7 +42,7 @@ const reducer = (state, action) => {
         }
         case "saveRecipe":
             if (action.value.id === "") {
-                action.value.id = genId();
+                action.value.id = HelperService.GenId();
                 state.recipes.push(action.value);
             } else {
                 const index = state.recipes.findIndex(

@@ -1,10 +1,9 @@
-import React, {useContext} from "react";
+import React,{useContext} from "react";
 import {
     Container,
     Table,
     TableHead,
     TableContainer,
-    TableCell,
     TableRow,
     TableBody,
     Paper,
@@ -12,10 +11,11 @@ import {
     Typography
 } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {store} from "./Store";
 import IconButton from "@material-ui/core/IconButton";
-import {Delete, Edit, Add, FileCopy} from "@material-ui/icons";
-import withStyles from "@material-ui/core/styles/withStyles";
+import {Add} from "@material-ui/icons";
+import {RecipesRows} from "./RecipesRows";
+import {StyledTableCell} from "./StyledCells";
+import {store} from "./Store";
 
 const useStyles = makeStyles({
     table: {
@@ -23,41 +23,12 @@ const useStyles = makeStyles({
     },
 });
 
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: theme.palette.action.active,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-    root: {
-        "&:nth-of-type(odd)": {
-            backgroundColor: theme.palette.action.hover,
-        },
-    },
-}))(TableRow);
-
 export const Recipes = () => {
     const context = useContext(store);
-    const {recipes} = context.state;
     const classes = useStyles();
-
-    const handleCopy = (item) => {
-        context.dispatch({type: "copyItem", value: item});
+    const handleAdd = () => {
+        context.dispatch({type: "showModal"});
     };
-
-    const handleDelete = (item) => {
-        context.dispatch({type: "deleteItem", value: item});
-    };
-
-    const handleEdit = (item) => {
-        context.dispatch({type: "showModal", value: item});
-    };
-
     return (
         <Container>
             <Paper>
@@ -65,7 +36,7 @@ export const Recipes = () => {
                     <Typography>
                     RECIPES
                     </Typography>
-                    <IconButton onClick={() => handleEdit()}>
+                    <IconButton onClick={() => handleAdd()}>
                         <Add></Add>
                     </IconButton>
                 </Toolbar>
@@ -80,39 +51,7 @@ export const Recipes = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {recipes.map((item) => (
-                                <StyledTableRow key={item.id}>
-                                    <StyledTableCell component="th" scope="row">
-                                        {item.title}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {item.description}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {item.ingredients.join(", ")}
-                                    </StyledTableCell>
-                                    <StyledTableCell align={"right"}>
-                                        <IconButton
-                                            aria-label="delete"
-                                            onClick={() => handleDelete(item)}
-                                        >
-                                            <Delete fontSize="small"/>
-                                        </IconButton>
-                                        <IconButton
-                                            aria-label="delete"
-                                            onClick={() => handleEdit(item)}
-                                        >
-                                            <Edit fontSize="small"/>
-                                        </IconButton>
-                                        <IconButton
-                                            aria-label="delete"
-                                            onClick={() => handleCopy(item)}
-                                        >
-                                            <FileCopy fontSize="small"/>
-                                        </IconButton>
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            ))}
+                            <RecipesRows></RecipesRows>
                         </TableBody>
                     </Table>
                 </TableContainer>
