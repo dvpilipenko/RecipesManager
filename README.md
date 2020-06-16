@@ -8,6 +8,7 @@ Applications for managing recipes, basic functionality:
 - editing and cloning existing recipes
 
 detailed information about the recipe is presented in the form of a pop-up window, when adding or editing, as well as in the detailed information displayed Title of recipes with the same ingredients
+____
 
 This is a basic ruby on rails app with react setup, there is also a docker-compose.yml and a Dockerfile in case they are needed.
 
